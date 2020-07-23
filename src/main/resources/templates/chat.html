@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Document</title>
+</head>
+<body>
+    <div style=" width: 500px">
+        <form onsubmit="return false">
+            <textarea id="messageFrame" style=" width: 500px;resize:none;height: 300px" ></textarea>
+            <div>
+                <button style="float: right" onclick="sendMsg()">发送</button>
+            </div>
+            <textarea id="sendFrame" style=" width: 500px;resize:none;height: 100px"></textarea>
+        </form>
+    </div>
+
+</body>
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    var webSocket;
+
+    $(function () {
+
+       if(window.WebSocket){
+           webSocket = new WebSocket("ws://zt.duia.com/talkAll");
+           // 收到消息
+           webSocket.onmessage = function (ev) {
+               console.log("jiesoudao1xiaoxi1")
+               val = $("#messageFrame").html()+ ev.data + "\n";
+               $("#messageFrame").html(val);
+           }
+           //
+       }else {
+           alert("当前浏览器不支持WebSocket")
+       }
+
+        document.onkeyup = function(e) {
+            // 兼容FF和IE和Opera
+            var event = e || window.event;
+            var key = event.which || event.keyCode || event.charCode;
+            if (key == 13) {
+                sendMsg();
+            }
+        };
+    });
+    function sendMsg(){
+        console.log(111);
+        var val = "我：" + $("#sendFrame").val();
+        console.log(val);
+        if(val){
+            val = $("#messageFrame").html()+ val + "\n";
+            $("#messageFrame").html(val);
+            if (webSocket.readyState = WebSocket.OPEN){
+                console.log($("#sendFrame").val());
+                webSocket.send($("#sendFrame").val());
+            }
+            $("#sendFrame").val("");
+        }
+    }
+
+</script>
+</html>
