@@ -46,6 +46,7 @@ public class MyWebSocketTextHandler extends SimpleChannelInboundHandler<TextWebS
             if (!channel.equals(channel1)){
                 channel1.writeAndFlush(new TextWebSocketFrame(channel.remoteAddress()+ ": " + twsf.text()));
             }
+
         });
     }
 }
